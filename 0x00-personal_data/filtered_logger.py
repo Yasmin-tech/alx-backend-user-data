@@ -60,7 +60,7 @@ def get_logger() -> logging.Logger:
         return a specific logger object
         """
     logger = logging.getLogger("user_data")
-    logger.setLevel = logging.INFO
+    logger.setLevel(logging.INFO)
 
     # Create a handler
     handler = logging.StreamHandler()
