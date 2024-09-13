@@ -1,4 +1,4 @@
-#!/usr/bi/env python3
+#!/usr/bin/env python3
 """
 Main file
 """
@@ -11,4 +11,4 @@ cursor.execute("SELECT COUNT(*) FROM users;")
 for row in cursor:
     print(row[0])
 cursor.close()
-db.close()n
+db.close()
