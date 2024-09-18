@@ -85,6 +85,8 @@ class BasicAuth(Auth):
         return user_list[0]
 
     def current_user(self, request=None) -> TypeVar('User'):
+        """ return the user if it authorized
+        """
         if request is None:
             return None
 
