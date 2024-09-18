@@ -6,6 +6,7 @@
 
 import base64
 import binascii
+import re
 from api.v1.auth.auth import Auth
 from flask import request
 from typing import List, TypeVar
@@ -47,3 +48,20 @@ class BasicAuth(Auth):
         except binascii.Error:
             return None
         return base64_decoded.decode("utf-8")
+
+    def extract_user_credentials(
+            self,
+            decoded_base64_authorization_header: str) -> (str, str):
+        """ Return the user's email and password from the decoded base64
+            string decoded_base64_authorization_header
+            """
+        if decoded_base64_authorization_header is None:
+            return None, None
+        if not isinstance(decoded_base64_authorization_header, str):
+            return None, None
+        credentials = re.search(
+                r"(.+):(.+)",
+                decoded_base64_authorization_header)
+        if not credentials:
+            return None, None
+        return credentials.group(1), credentials.group(2)
