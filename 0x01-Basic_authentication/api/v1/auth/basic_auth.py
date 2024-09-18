@@ -10,6 +10,7 @@ import re
 from api.v1.auth.auth import Auth
 from flask import request
 from typing import List, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -65,3 +66,20 @@ class BasicAuth(Auth):
         if not credentials:
             return None, None
         return credentials.group(1), credentials.group(2)
+
+    def user_object_from_credentials(
+            self, user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """ Return the user object based on the given email and password
+        """
+        if not user_email or not user_pwd:
+            return None
+        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
+            return None
+        User.load_from_file()
+        user_list = User.search({"email": user_email})
+        if not user_list or len(user_list) == 0:
+            return None
+        if not user_list[0].is_valid_password(user_pwd):
+            return None
+        return user_list[0]
