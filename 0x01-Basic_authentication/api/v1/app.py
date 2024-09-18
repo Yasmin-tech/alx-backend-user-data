@@ -22,6 +22,7 @@ if auth_type:
     else:
         from api.v1.auth.auth import Auth
         auth = Auth()
+    print(type(auth))
 
 
 @app.errorhandler(404)

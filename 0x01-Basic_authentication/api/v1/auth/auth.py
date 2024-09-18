@@ -46,4 +46,3 @@ class BasicAuth(Auth):
     """
         Inherits from Auth and implement BasicAuth mechanesim
         """
-    pass
