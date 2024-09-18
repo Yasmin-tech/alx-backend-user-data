@@ -40,9 +40,3 @@ class Auth():
         """ implement later
         """
         return None
-
-
-class BasicAuth(Auth):
-    """
-        Inherits from Auth and implement BasicAuth mechanesim
-        """
