@@ -42,7 +42,7 @@ def not_found(error) -> str:
 
 
 @app.before_request
-def check_authentication():
+def check_authentication() -> None:
     if not auth:
         return
     require_auth = auth.require_auth(
