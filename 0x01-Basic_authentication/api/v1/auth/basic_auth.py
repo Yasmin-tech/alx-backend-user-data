@@ -61,7 +61,7 @@ class BasicAuth(Auth):
         if not isinstance(decoded_base64_authorization_header, str):
             return None, None
         credentials = re.search(
-                r"(.+):(.+)",
+                r"(.+?):(.+)",
                 decoded_base64_authorization_header)
         if not credentials:
             return None, None
