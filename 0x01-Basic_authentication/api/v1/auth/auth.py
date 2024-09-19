@@ -22,7 +22,11 @@ class Auth():
             return True
         else:
             for p in excluded_paths:
-                if p.strip("/") == path.strip("/"):
+                if p.endswith("*"):
+                    p = p.strip("*")
+                    if p in path:
+                        return False
+                elif p.strip("/") == path.strip("/"):
                     return False
         return True
 
