@@ -33,7 +33,7 @@ def log_in():
 
     user_found = user_list[0]
     if not user_found.is_valid_password(password):
-        jsonify({"error": "wrong password"})
+        jsonify({"error": "wrong password"}), 401
 
     # a user is found with the correct password
     from api.v1.app import auth
