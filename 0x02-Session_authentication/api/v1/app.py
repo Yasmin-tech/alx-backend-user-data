@@ -56,11 +56,22 @@ def check_authentication() -> None:
         return
     require_auth = auth.require_auth(
             request.path,
-            ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+            ['/api/v1/status/',
+                '/api/v1/unauthorized/',
+                '/api/v1/forbidden/',
+                '/api/v1/auth_session/login/']
             )
     if require_auth:
-        if auth.authorization_header(request) is None:
+        if auth.authorization_header(request) is None \
+                and auth.session_cookie(request) is None:
             abort(401)
+        if auth.authorization_header(request) and \
+                auth.session_cookie(request) is None:
+            abort(403)
+        session_id = auth.session_cookie(request)
+        user = auth.user_id_for_session_id(session_id)
+        if user is None:
+            abort(403)
         if auth.current_user(request) is None:
             abort(403)
         request.current_user = auth.current_user(request)
