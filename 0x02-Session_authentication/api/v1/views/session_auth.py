@@ -32,12 +32,10 @@ def log_in():
         return jsonify({"error": "no user found for this email"}), 404
 
     user_found = user_list[0]
-    if not user_found.is_valid_password(password):
-        jsonify({"error": "wrong password"}), 401
-
-    # a user is found with the correct password
-    from api.v1.app import auth
-    session_id = auth.create_session(user_found.id)
-    rsp = jsonify(user_found.to_json())
-    rsp.set_cookie(getenv("SESSION_NAME"), session_id)
-    return rsp
+    if user_found.is_valid_password(password):
+        from api.v1.app import auth
+        sessiond_id = auth.create_session(getattr(user_found, 'id'))
+        res = jsonify(user_found.to_json())
+        res.set_cookie(os.getenv("SESSION_NAME"), sessiond_id)
+        return res
+    return jsonify({"error": "wrong password"}), 401
