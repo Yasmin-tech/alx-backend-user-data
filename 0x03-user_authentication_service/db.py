@@ -8,6 +8,7 @@ from sqlalchemy.orm.session import Session
 
 from user import Base
 from user import User
+from typing import Dict
 
 
 class DB:
@@ -39,3 +40,11 @@ class DB:
         self._session.add(user_obj)
         self._session.commit()
         return user_obj
+
+    def find_user_by(self, **kwargs: Dict) -> User:
+        """
+            This method takes in arbitrary keyword arguments and
+            returns the first row found in the users table as filtered by
+            the method’s input arguments
+            """
+        return self._session.query(User).filter_by(**kwargs).one()
