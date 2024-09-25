@@ -4,6 +4,7 @@
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
 import uuid
+from typing import Optional
 
 
 from db import DB
@@ -75,3 +76,23 @@ class Auth:
         if bcrypt.checkpw(password.encode(), user_obj.hashed_password):
             return True
         return False
+
+    def create_session(self, email: str) -> Optional[str]:
+        """
+            Create and return the session id if the user exists.
+            Otherwise, return None.
+            """
+        if not email or not isinstance(email, str):
+            return False
+
+        user_obj = None
+        try:
+            user_obj = self._db.find_user_by(email=email)
+        except NoResultFound:
+            pass
+
+        if user_obj is None:
+            return None
+        session_id = _generate_uuid()
+        self._db.update_user(user_obj.id, session_id=session_id)
+        return session_id
