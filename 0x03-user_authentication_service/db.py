@@ -51,7 +51,7 @@ class DB:
         user_obj = self._session.query(User).filter_by(**kwargs).one()
         # if user_obj is None:
         #     raise NoResultFound
-        # return user_obj
+        return user_obj
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """
