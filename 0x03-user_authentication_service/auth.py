@@ -4,7 +4,7 @@
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
 import uuid
-from typing import Optional
+from typing import Union
 
 
 from db import DB
@@ -97,7 +97,7 @@ class Auth:
         self._db.update_user(user_obj.id, session_id=session_id)
         return session_id
 
-    def get_user_from_session_id(self, session_id: str) -> User:
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """
             Return the use instance if it exists with the given session_id
             """
