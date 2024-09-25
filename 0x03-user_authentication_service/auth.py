@@ -82,7 +82,7 @@ class Auth:
             Create and return the session id if the user exists.
             Otherwise, return None.
             """
-        if not email or not isinstance(email, str):
+        if not email:
             return False
 
         user_obj = None
