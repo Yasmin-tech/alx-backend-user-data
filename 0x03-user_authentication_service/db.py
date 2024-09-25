@@ -60,11 +60,11 @@ class DB:
             - if arguments in kwargs that does not correspond to a user
                 attribute is passed, raise a ValueError
             """
-        try:
-            user_obj = self.find_user_by(id=user_id)
-        except NoResultFound:
-            return
-
+        # try:
+        #     user_obj = self.find_user_by(id=user_id)
+        # except NoResultFound:
+        #     return
+        user_obj = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(user_obj, key):
                 raise ValueError
