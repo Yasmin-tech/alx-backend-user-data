@@ -11,7 +11,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base
 from user import User
-from typing import Dict
+# from typing import Dict
 
 
 class DB:
@@ -44,27 +44,21 @@ class DB:
         self._session.commit()
         return user_obj
 
-    def find_user_by(self, **kwargs: Dict) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
             This method takes in arbitrary keyword arguments and
             returns the first row found in the users table as filtered by
             the method’s input arguments
             """
-        fields, values = [], []
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                fields.append(getattr(User, key))
-                values.append(value)
-            else:
+        for key in kwargs.keys():
+            if not hasattr(User, key):
                 raise InvalidRequestError()
-        result = self._session.query(User).filter(
-            tuple_(*fields).in_([tuple(values)])
-        ).first()
-        if result is None:
+        user_obj = self._session.query(User).filter_by(**kwargs).first()
+        if user_obj is None:
             raise NoResultFound()
-        return result
+        return user_obj
 
-    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
             Update the user that has user_id and commit the changes
             - if user is not found, nothing is changed and no error is raised
