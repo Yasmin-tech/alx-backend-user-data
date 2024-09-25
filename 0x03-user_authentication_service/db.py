@@ -5,7 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-# from sqlalchemy.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
+
 
 from user import Base
 from user import User
@@ -48,9 +50,12 @@ class DB:
             returns the first row found in the users table as filtered by
             the method’s input arguments
             """
-        user_obj = self._session.query(User).filter_by(**kwargs).one()
-        # if user_obj is None:
-        #     raise NoResultFound
+        for key in kwargs.keys():
+            if not hasattr(User, key):
+                raise InvalidRequestError()
+        user_obj = self._session.query(User).filter_by(**kwargs).first()
+        if user_obj is None:
+            raise NoResultFound()
         return user_obj
 
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
