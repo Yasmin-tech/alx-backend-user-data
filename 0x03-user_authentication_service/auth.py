@@ -97,7 +97,7 @@ class Auth:
         self._db.update_user(user_obj.id, session_id=session_id)
         return session_id
 
-    def get_user_from_session_id(session_id: str):
+    def get_user_from_session_id(self, session_id: str):
         """
             Return the use instance if it exists with the given session_id
             """
