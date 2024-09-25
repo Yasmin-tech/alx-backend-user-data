@@ -52,3 +52,21 @@ class DB:
         if user_obj is None:
             raise NoResultFound()
         return user_obj
+
+    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+        """
+            Update the user that has user_id and commit the changes
+            - if user is not found, nothing is changed and no error is raised
+            - if arguments in kwargs that does not correspond to a user
+                attribute is passed, raise a ValueError
+            """
+        try:
+            user_obj = self.find_user_by(id=user_id)
+        except NoResultFound:
+            return
+
+        for key, value in kwargs.items():
+            if not hasattr(user_obj, key):
+                raise ValueError
+            setattr(user_obj, key, value)
+        self._session.commit()
