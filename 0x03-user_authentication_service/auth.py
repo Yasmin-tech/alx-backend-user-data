@@ -101,7 +101,7 @@ class Auth:
         """
             Return the use instance if it exists with the given session_id
             """
-        if not session_id or isinstance(session_id, str):
+        if not session_id:
             return None
 
         try:
