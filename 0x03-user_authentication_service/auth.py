@@ -77,7 +77,7 @@ class Auth:
             return True
         return False
 
-    def create_session(self, email: str) -> Optional[str]:
+    def create_session(self, email: str) -> Union[str, None]:
         """
             Create and return the session id if the user exists.
             Otherwise, return None.
