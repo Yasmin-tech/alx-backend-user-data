@@ -133,7 +133,7 @@ class Auth:
 
         return token
 
-    def update_password(self, reset_token: str, password: str): -> None:
+    def update_password(self, reset_token: str, password: str) -> None:
         """
             Find the user based on their reset_token.
             If user exists:
