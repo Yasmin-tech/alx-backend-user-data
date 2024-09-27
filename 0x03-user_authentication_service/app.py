@@ -65,7 +65,7 @@ def logout() -> str:
 
     # if the user exists, destroy the session_id and redirect to the main page
     auth.destroy_session(user_instance.id)
-    return redirect(url_for("index"))
+    return redirect("/")
 
 
 if __name__ == "__main__":
