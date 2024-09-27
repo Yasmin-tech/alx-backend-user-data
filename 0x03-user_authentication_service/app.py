@@ -4,7 +4,7 @@
     """
 
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 
 auth = Auth()
@@ -48,6 +48,24 @@ def login() -> str:
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response
+
+
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
+def logout() -> str:
+    """
+        The endpoint to logout a user
+        """
+    # Get the session_id from the cookie that is set in the login route
+    session_id = request.cookies.get("session_id")
+
+    # if the user does not exist, return a 403 status
+    user_instance = auth.get_user_from_session_id(session_id)
+    if user_instance is None:
+        abort(403)
+
+    # if the user exists, destroy the session_id and redirect to the main page
+    auth.destroy_session(user_instance.id)
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
